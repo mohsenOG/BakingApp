@@ -1,3 +1,17 @@
 <resources>
     <string name="app_name">Baking App</string>
+
+
+    <string name="element_text">Element</string>
+    <string name="grid_layout_manager">Grid Layout Manager</string>
+    <string name="linear_layout_manager">Linear Layout Manager</string>
+
+
+
+    <string name="no_internet">There is no internet connection.</string>
+
+
+    <string name="retry_description">retry the query from web</string>
+    <string name="retry">Retry</string>
+
 </resources>
