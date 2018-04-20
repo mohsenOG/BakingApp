@@ -26,6 +26,10 @@ public class Recipe implements Parcelable {
     @SerializedName("image")
     private String image;
 
+    public String getName() { return name; }
+
+    public String getId() { return id; }
+
 
     @Override
     public int describeContents() {

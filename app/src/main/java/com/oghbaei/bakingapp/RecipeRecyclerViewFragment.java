@@ -1,7 +1,8 @@
 package com.oghbaei.bakingapp;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.support.annotation.NonNull;
+import android.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -10,16 +11,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RadioButton;
 
+import com.oghbaei.bakingapp.queryModel.Recipe;
+
+import java.util.ArrayList;
+
+import static com.oghbaei.bakingapp.MainActivity.ALL_RECIPE_KEY_BUNDLE;
+
 /**
  * Created by Mohsen on 18.04.2018.
  * The main concept is taken from https://developer.android.com/samples/RecyclerView/src/com.example.android.recyclerview/RecyclerViewFragment.html
  */
 
-public class RecipeRecyclerViewFragment extends Fragment {
+public class RecipeRecyclerViewFragment extends Fragment implements RecipeRecyclerViewAdapter.RecipeClickListener {
 
     private static final String KEY_LAYOUT_MANAGER = "layoutManager";
     private static final int SPAN_COUNT = 2;
-    private static final int DATASET_COUNT = 60;
 
     private enum LayoutManagerType {
         GRID_LAYOUT_MANAGER,
@@ -34,23 +40,25 @@ public class RecipeRecyclerViewFragment extends Fragment {
     protected RecyclerView mRecyclerView;
     protected RecipeRecyclerViewAdapter mAdapter;
     protected RecyclerView.LayoutManager mLayoutManager;
-    protected String[] mDataset;
+    protected ArrayList<Recipe> mRecipes;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Initialize dataset, this data would usually come from a local content provider or
-        // remote server.
-        initDataset();
+        Bundle receivedBundle = getArguments();
+        if (receivedBundle != null) {
+            mRecipes = receivedBundle.getParcelableArrayList(ALL_RECIPE_KEY_BUNDLE);
+        }
+
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_recipe_recycler_view, container, false);
 
-        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView_recipe);
+        mRecyclerView = rootView.findViewById(R.id.recyclerView_recipe);
         mLayoutManager = new LinearLayoutManager(getActivity());
         mCurrentLayoutManagerType = LayoutManagerType.LINEAR_LAYOUT_MANAGER;
 
@@ -60,11 +68,11 @@ public class RecipeRecyclerViewFragment extends Fragment {
         }
         setRecyclerViewLayoutManager(mCurrentLayoutManagerType);
 
-        mAdapter = new RecipeRecyclerViewAdapter(mDataset);
+        mAdapter = new RecipeRecyclerViewAdapter(mRecipes, getContext());
         // Set CustomAdapter as the adapter for RecyclerView.
         mRecyclerView.setAdapter(mAdapter);
 
-        mLinearLayoutRadioButton = (RadioButton) rootView.findViewById(R.id.linear_layout_rb);
+        mLinearLayoutRadioButton = rootView.findViewById(R.id.linear_layout_rb);
         mLinearLayoutRadioButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -72,7 +80,7 @@ public class RecipeRecyclerViewFragment extends Fragment {
             }
         });
 
-        mGridLayoutRadioButton = (RadioButton) rootView.findViewById(R.id.grid_layout_rb);
+        mGridLayoutRadioButton = rootView.findViewById(R.id.grid_layout_rb);
         mGridLayoutRadioButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -82,6 +90,12 @@ public class RecipeRecyclerViewFragment extends Fragment {
 
         return rootView;
     }
+
+    @Override
+    public void onRecipeClick(String recipeId) {
+        //TODO show the recipe Activity/Fragment here based on the device and structure.
+    }
+
 
     /**
      * Set RecyclerView's LayoutManager to the one given.
@@ -116,20 +130,8 @@ public class RecipeRecyclerViewFragment extends Fragment {
     }
 
     @Override
-    public void onSaveInstanceState(Bundle savedInstanceState) {
-        // Save currently selected layout manager.
+    public void onSaveInstanceState(@NonNull Bundle savedInstanceState) {
         savedInstanceState.putSerializable(KEY_LAYOUT_MANAGER, mCurrentLayoutManagerType);
         super.onSaveInstanceState(savedInstanceState);
-    }
-
-    /**
-     * Generates Strings for RecyclerView's adapter. This data would usually come
-     * from a local content provider or remote server.
-     */
-    private void initDataset() {
-        mDataset = new String[DATASET_COUNT];
-        for (int i = 0; i < DATASET_COUNT; i++) {
-            mDataset[i] = "This is element #" + i;
-        }
     }
 }

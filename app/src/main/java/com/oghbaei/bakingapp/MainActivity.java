@@ -24,7 +24,7 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
-    private final String ALL_RECIPE_KEY_BUNDLE = "ALL_RECIPE_KEY_BUNDLE";
+    public static final String ALL_RECIPE_KEY_BUNDLE = "ALL_RECIPE_KEY_BUNDLE";
     @BindView(R.id.tv_error_msg_display) TextView mErrorTextView;
     @BindView(R.id.pb_loading_indicator) ProgressBar mLoadingIndicator;
     @BindView(R.id.btn_search_again) Button mRetryButton;
