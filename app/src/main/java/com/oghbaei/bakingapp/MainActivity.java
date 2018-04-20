@@ -2,6 +2,7 @@ package com.oghbaei.bakingapp;
 
 
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -76,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
                 bundle.putParcelableArrayList(ALL_RECIPE_KEY_BUNDLE, recipes);
                 RecipeRecyclerViewFragment recipeFragment = new RecipeRecyclerViewFragment();
                 recipeFragment.setArguments(bundle);
-                android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
+                FragmentManager fragmentManager = getSupportFragmentManager();
                 fragmentManager.beginTransaction()
                         .add(R.id.recipe_frame_layout, recipeFragment)
                         .commit();
