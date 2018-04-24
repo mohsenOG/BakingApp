@@ -22,6 +22,11 @@ public class Step implements Parcelable {
     @SerializedName("thumbnailURL")
     private String thumbnailURL;
 
+
+    public String getShortDescription() { return shortDescription; }
+
+    public String getId() { return id; }
+
     @Override
     public int describeContents() {
         return 0;

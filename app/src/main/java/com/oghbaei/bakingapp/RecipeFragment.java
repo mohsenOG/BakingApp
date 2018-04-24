@@ -1,5 +1,6 @@
 package com.oghbaei.bakingapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -15,15 +16,19 @@ import com.oghbaei.bakingapp.queryModel.Recipe;
 
 import java.util.ArrayList;
 
-import static com.oghbaei.bakingapp.MainActivity.ALL_RECIPE_KEY_BUNDLE;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Created by Mohsen on 18.04.2018.
  * The main concept is taken from https://developer.android.com/samples/RecyclerView/src/com.example.android.recyclerview/RecyclerViewFragment.html
  */
 
-public class RecipeRecyclerViewFragment extends Fragment implements RecipeRecyclerViewAdapter.RecipeClickListener {
+public class RecipeFragment extends Fragment implements RecipeRecyclerViewAdapter.RecipeClickListener {
 
+    public static final String ALL_RECIPES_KEY_BUNDLE = "ALL_RECIPES_KEY_BUNDLE";
+    public static final String EXTRA_RECIPE_ID = "EXTRA_RECIPE_ID";
+    public static final String EXTRA_RECIPE = "EXTRA_RECIPE";
     private static final String KEY_LAYOUT_MANAGER = "layoutManager";
     private static final int SPAN_COUNT = 2;
 
@@ -34,11 +39,11 @@ public class RecipeRecyclerViewFragment extends Fragment implements RecipeRecycl
 
     protected LayoutManagerType mCurrentLayoutManagerType;
 
-    protected RadioButton mLinearLayoutRadioButton;
-    protected RadioButton mGridLayoutRadioButton;
+    @BindView(R.id.linear_layout_rb) protected RadioButton mLinearLayoutRadioButton;
+    @BindView(R.id.grid_layout_rb) protected RadioButton mGridLayoutRadioButton;
 
-    protected RecyclerView mRecyclerView;
-    protected RecipeRecyclerViewAdapter mAdapter;
+    @BindView(R.id.recyclerView_recipe) protected RecyclerView mRecipeRecyclerView;
+    protected RecipeRecyclerViewAdapter mRecyclerViewAdapter;
     protected RecyclerView.LayoutManager mLayoutManager;
     protected ArrayList<Recipe> mRecipes;
 
@@ -48,7 +53,7 @@ public class RecipeRecyclerViewFragment extends Fragment implements RecipeRecycl
 
         Bundle receivedBundle = getArguments();
         if (receivedBundle != null) {
-            mRecipes = receivedBundle.getParcelableArrayList(ALL_RECIPE_KEY_BUNDLE);
+            mRecipes = receivedBundle.getParcelableArrayList(ALL_RECIPES_KEY_BUNDLE);
         }
 
     }
@@ -56,9 +61,9 @@ public class RecipeRecyclerViewFragment extends Fragment implements RecipeRecycl
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_recipe_recycler_view, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_recipe, container, false);
+        ButterKnife.bind(this, rootView);
 
-        mRecyclerView = rootView.findViewById(R.id.recyclerView_recipe);
         mLayoutManager = new LinearLayoutManager(getActivity());
         mCurrentLayoutManagerType = LayoutManagerType.LINEAR_LAYOUT_MANAGER;
 
@@ -68,11 +73,10 @@ public class RecipeRecyclerViewFragment extends Fragment implements RecipeRecycl
         }
         setRecyclerViewLayoutManager(mCurrentLayoutManagerType);
 
-        mAdapter = new RecipeRecyclerViewAdapter(mRecipes, getContext());
-        // Set CustomAdapter as the adapter for RecyclerView.
-        mRecyclerView.setAdapter(mAdapter);
+        mRecyclerViewAdapter = new RecipeRecyclerViewAdapter(mRecipes, getContext());
+        mRecyclerViewAdapter.setRecipeClickListener(this);
+        mRecipeRecyclerView.setAdapter(mRecyclerViewAdapter);
 
-        mLinearLayoutRadioButton = rootView.findViewById(R.id.linear_layout_rb);
         mLinearLayoutRadioButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -80,7 +84,6 @@ public class RecipeRecyclerViewFragment extends Fragment implements RecipeRecycl
             }
         });
 
-        mGridLayoutRadioButton = rootView.findViewById(R.id.grid_layout_rb);
         mGridLayoutRadioButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -94,6 +97,9 @@ public class RecipeRecyclerViewFragment extends Fragment implements RecipeRecycl
     @Override
     public void onRecipeClick(String recipeId) {
         //TODO show the recipe Activity/Fragment here based on the device and structure.
+        Intent intent = new Intent(getContext(), RecipeDetailActivity.class);
+        intent.putExtra(EXTRA_RECIPE, mRecipes.get(Integer.parseInt(recipeId) - 1));
+        startActivity(intent);
     }
 
 
@@ -106,8 +112,8 @@ public class RecipeRecyclerViewFragment extends Fragment implements RecipeRecycl
         int scrollPosition = 0;
 
         // If a layout manager has already been set, get current scroll position.
-        if (mRecyclerView.getLayoutManager() != null) {
-            scrollPosition = ((LinearLayoutManager) mRecyclerView.getLayoutManager())
+        if (mRecipeRecyclerView.getLayoutManager() != null) {
+            scrollPosition = ((LinearLayoutManager) mRecipeRecyclerView.getLayoutManager())
                     .findFirstCompletelyVisibleItemPosition();
         }
 
@@ -125,8 +131,8 @@ public class RecipeRecyclerViewFragment extends Fragment implements RecipeRecycl
                 mCurrentLayoutManagerType = LayoutManagerType.LINEAR_LAYOUT_MANAGER;
         }
 
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        mRecyclerView.scrollToPosition(scrollPosition);
+        mRecipeRecyclerView.setLayoutManager(mLayoutManager);
+        mRecipeRecyclerView.scrollToPosition(scrollPosition);
     }
 
     @Override

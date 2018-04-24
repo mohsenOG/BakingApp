@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.oghbaei.bakingapp.MainActivity">
+    tools:context="com.oghbaei.bakingapp.RecipeActivity">
 
     <TextView
         android:id="@+id/tv_error_msg_display"
@@ -31,7 +31,7 @@
         android:visibility="invisible" />
 
     <FrameLayout
-        android:id="@+id/recipe_frame_layout"
+        android:id="@+id/fl_recipe"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:scaleType="centerInside" />

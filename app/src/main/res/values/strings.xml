@@ -7,13 +7,15 @@
 
 
     <string name="tmp_recipe_name">Recipe Name</string>
+    <string name="tmp_step_name">Recipe Name</string>
     <string name="thumbnail_default_description">The recipe description</string>
     <string name="no_internet">There is no internet connection.</string>
+    <string name="ingredients">Ingredients</string>
 
 
     <string name="retry_description">retry the query from web</string>
     <string name="retry">Retry</string>
 
-    <string name="no_recipe_name">Unknown</string>
+    <string name="no_name">Unknown</string>
 
 </resources>

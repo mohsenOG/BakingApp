@@ -4,6 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.oghbaei.bakingapp.DetailsActivity">
+    tools:context="com.oghbaei.bakingapp.RecipeDetailActivity">
+
+    <FrameLayout
+        android:id="@+id/fl_recipe_detail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scaleType="centerInside" />
 
 </android.support.constraint.ConstraintLayout>

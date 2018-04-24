@@ -27,6 +27,7 @@ public class RecipeRecyclerViewAdapter extends RecyclerView.Adapter<RecipeRecycl
     private RecipeClickListener mRecipeClickListener;
 
     public RecipeRecyclerViewAdapter(ArrayList<Recipe> recipes, Context context) {
+        mRecipeClickListener = null;
         mRecipes = recipes;
         mContext = context;
     }
@@ -86,7 +87,7 @@ public class RecipeRecyclerViewAdapter extends RecyclerView.Adapter<RecipeRecycl
                 recipeNameTextView.setText(recipeName);
             }
             else
-                recipeNameTextView.setText(mContext.getString(R.string.no_recipe_name));
+                recipeNameTextView.setText(mContext.getString(R.string.no_name));
         }
     }
 

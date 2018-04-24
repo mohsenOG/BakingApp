@@ -30,6 +30,11 @@ public class Recipe implements Parcelable {
 
     public String getId() { return id; }
 
+    public List<Step> getSteps() { return steps; }
+
+    public List<Ingredient> getIngredients() {
+        return ingredients;
+    }
 
     @Override
     public int describeContents() {

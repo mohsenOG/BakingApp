@@ -23,13 +23,14 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity {
+import static com.oghbaei.bakingapp.RecipeFragment.ALL_RECIPES_KEY_BUNDLE;
 
-    public static final String ALL_RECIPE_KEY_BUNDLE = "ALL_RECIPE_KEY_BUNDLE";
+public class RecipeActivity extends AppCompatActivity {
+
     @BindView(R.id.tv_error_msg_display) TextView mErrorTextView;
     @BindView(R.id.pb_loading_indicator) ProgressBar mLoadingIndicator;
     @BindView(R.id.btn_search_again) Button mRetryButton;
-    @BindView(R.id.recipe_frame_layout) FrameLayout mRecipeFragmentFrameLayout;
+    @BindView(R.id.fl_recipe) FrameLayout mRecipeFragmentFrameLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +45,6 @@ public class MainActivity extends AppCompatActivity {
         } else {
             showHideErrorMessage(getString(R.string.no_internet), true);
         }
-
     }
 
     private void showHideErrorMessage(String msg, boolean show) {
@@ -74,16 +74,15 @@ public class MainActivity extends AppCompatActivity {
                 if (recipes == null || recipes.isEmpty()) return;
 
                 Bundle bundle = new Bundle();
-                bundle.putParcelableArrayList(ALL_RECIPE_KEY_BUNDLE, recipes);
-                RecipeRecyclerViewFragment recipeFragment = new RecipeRecyclerViewFragment();
+                bundle.putParcelableArrayList(ALL_RECIPES_KEY_BUNDLE, recipes);
+                RecipeFragment recipeFragment = new RecipeFragment();
                 recipeFragment.setArguments(bundle);
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 fragmentManager.beginTransaction()
-                        .add(R.id.recipe_frame_layout, recipeFragment)
-                        .commit();
+                        .add(R.id.fl_recipe, recipeFragment)
+                        .commitAllowingStateLoss();
 
                 showHideErrorMessage(null, false);
-
             }
 
             @Override

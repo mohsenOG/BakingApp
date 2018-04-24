@@ -19,6 +19,12 @@ public class Ingredient implements Parcelable {
     @SerializedName("ingredient")
     private String ingredient;
 
+    public String getQuantity() { return quantity; }
+
+    public String getMeasure() { return measure; }
+
+    public String getIngredient() { return ingredient; }
+
     @Override
     public int describeContents() {
         return 0;
