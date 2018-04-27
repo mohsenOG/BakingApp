@@ -1,5 +1,6 @@
 package com.oghbaei.bakingapp;
 
+import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -18,17 +19,24 @@ import android.widget.FrameLayout;
 
 import com.oghbaei.bakingapp.queryModel.Recipe;
 
+import butterknife.BindBool;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.oghbaei.bakingapp.RecipeActivity.RECIPE_KEY_RECIPE_ACT_TO_DETAIL_ACT;
+import static com.oghbaei.bakingapp.StepActivity.RECIPE_KEY_DETAIL_ACT_TO_STEP_ACT;
+import static com.oghbaei.bakingapp.StepActivity.RECIPE_KEY_FROM_STEP_ACT_TO_DETAIL_ACT;
+import static com.oghbaei.bakingapp.StepActivity.STEP_ID_KEY_DETAIL_ACT_TO_STEP_ACT;
 
 
 public class DetailActivity extends AppCompatActivity implements DetailFragment.OnDetailFragmentInteractionListener {
 
+    public static final String EXTRA_RECIPE_SAVE_INSTANCE_DETAIL_ACT = "EXTRA_RECIPE_SAVE_INSTANCE_DETAIL_ACT";
+
     @BindView(R.id.cp_container) protected ViewPager mViewPager;
     protected SectionsPagerAdapter mSectionsPagerAdapter;
     private Recipe mRecipe;
+    @BindBool(R.bool.isLarge) protected boolean mIsLargeScreen;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,13 +45,20 @@ public class DetailActivity extends AppCompatActivity implements DetailFragment.
         ButterKnife.bind(this);
 
         Bundle extras = getIntent().getExtras();
-        if (extras == null) {
+        if (extras == null && savedInstanceState == null) {
             throw new RuntimeException(this.toString() + " must send recipe from Recipe Activity to Detail Activity.");
-        }
-        mRecipe = extras.getParcelable(RECIPE_KEY_RECIPE_ACT_TO_DETAIL_ACT);
-        String title = mRecipe.getName();
-        if (title != null && !title.isEmpty()) {
-            this.setTitle(mRecipe.getName());
+        } else if (extras != null) {
+            mRecipe = extras.getParcelable(RECIPE_KEY_RECIPE_ACT_TO_DETAIL_ACT);
+            String title = mRecipe.getName();
+            if (title != null && !title.isEmpty()) {
+                this.setTitle(mRecipe.getName());
+            }
+        } else {
+            mRecipe = savedInstanceState.getParcelable(EXTRA_RECIPE_SAVE_INSTANCE_DETAIL_ACT);
+            String title = mRecipe.getName();
+            if (title != null && !title.isEmpty()) {
+                this.setTitle(mRecipe.getName());
+            }
         }
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -69,8 +84,21 @@ public class DetailActivity extends AppCompatActivity implements DetailFragment.
     }
 
     @Override
-    public void onDetailPassData(String StepId) {
-        //TODO it should eaither show StepActivity or StepFragment in DetailActivity.
+    public void onDetailPassData(String stepId) {
+        if (mIsLargeScreen) {
+            //TODO show two panels with step.
+        } else {
+            Intent intent = new Intent(this, StepActivity.class);
+            intent.putExtra(RECIPE_KEY_DETAIL_ACT_TO_STEP_ACT, mRecipe);
+            intent.putExtra(STEP_ID_KEY_DETAIL_ACT_TO_STEP_ACT, stepId);
+            startActivity(intent);
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putParcelable(EXTRA_RECIPE_SAVE_INSTANCE_DETAIL_ACT, mRecipe);
+        super.onSaveInstanceState(outState);
     }
 
     /**

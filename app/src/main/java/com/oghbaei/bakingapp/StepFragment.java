@@ -152,9 +152,11 @@ public class StepFragment extends Fragment {
     }
 
     private void releasePlayer() {
-        mSimpleExpPlayer.stop();
-        mSimpleExpPlayer.release();
-        mSimpleExpPlayer = null;
+        if (mSimpleExpPlayer != null) {
+            mSimpleExpPlayer.stop();
+            mSimpleExpPlayer.release();
+            mSimpleExpPlayer = null;
+        }
     }
 
     private void initDescriptionView() {
