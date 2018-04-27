@@ -1,5 +1,6 @@
 package com.oghbaei.bakingapp;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -26,9 +27,7 @@ import butterknife.ButterKnife;
 
 public class RecipeFragment extends Fragment implements RecipeRecyclerViewAdapter.RecipeClickListener {
 
-    public static final String ALL_RECIPES_KEY_BUNDLE = "ALL_RECIPES_KEY_BUNDLE";
-    public static final String EXTRA_RECIPE_ID = "EXTRA_RECIPE_ID";
-    public static final String EXTRA_RECIPE = "EXTRA_RECIPE";
+    public static final String RECIPES_KEY_RECIPE_ACT_TO_RECIPE_FRAG = "RECIPES_KEY_RECIPE_ACT_TO_RECIPE_FRAG";
     private static final String KEY_LAYOUT_MANAGER = "layoutManager";
     private static final int SPAN_COUNT = 2;
 
@@ -46,14 +45,24 @@ public class RecipeFragment extends Fragment implements RecipeRecyclerViewAdapte
     protected RecipeRecyclerViewAdapter mRecyclerViewAdapter;
     protected RecyclerView.LayoutManager mLayoutManager;
     protected ArrayList<Recipe> mRecipes;
+    private OnRecipeFragmentInteractionListener mRecipeFragmentListener;
+
+    public static RecipeFragment newInstance(ArrayList<Recipe> recipes) {
+        RecipeFragment fragment = new RecipeFragment();
+        Bundle args = new Bundle();
+        args.putParcelableArrayList(RECIPES_KEY_RECIPE_ACT_TO_RECIPE_FRAG, recipes);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    public RecipeFragment() {}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Bundle receivedBundle = getArguments();
-        if (receivedBundle != null) {
-            mRecipes = receivedBundle.getParcelableArrayList(ALL_RECIPES_KEY_BUNDLE);
+        if (getArguments() != null) {
+            mRecipes = getArguments().getParcelableArrayList(RECIPES_KEY_RECIPE_ACT_TO_RECIPE_FRAG);
         }
 
     }
@@ -75,6 +84,7 @@ public class RecipeFragment extends Fragment implements RecipeRecyclerViewAdapte
 
         mRecyclerViewAdapter = new RecipeRecyclerViewAdapter(mRecipes, getContext());
         mRecyclerViewAdapter.setRecipeClickListener(this);
+        mRecipeRecyclerView.setHasFixedSize(true);
         mRecipeRecyclerView.setAdapter(mRecyclerViewAdapter);
 
         mLinearLayoutRadioButton.setOnClickListener(new View.OnClickListener() {
@@ -96,12 +106,8 @@ public class RecipeFragment extends Fragment implements RecipeRecyclerViewAdapte
 
     @Override
     public void onRecipeClick(String recipeId) {
-        //TODO show the recipe Activity/Fragment here based on the device and structure.
-        Intent intent = new Intent(getContext(), RecipeDetailActivity.class);
-        intent.putExtra(EXTRA_RECIPE, mRecipes.get(Integer.parseInt(recipeId) - 1));
-        startActivity(intent);
+        mRecipeFragmentListener.onRecipePassData(mRecipes.get(Integer.parseInt(recipeId) - 1));
     }
-
 
     /**
      * Set RecyclerView's LayoutManager to the one given.
@@ -139,5 +145,26 @@ public class RecipeFragment extends Fragment implements RecipeRecyclerViewAdapte
     public void onSaveInstanceState(@NonNull Bundle savedInstanceState) {
         savedInstanceState.putSerializable(KEY_LAYOUT_MANAGER, mCurrentLayoutManagerType);
         super.onSaveInstanceState(savedInstanceState);
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnRecipeFragmentInteractionListener) {
+            mRecipeFragmentListener = (OnRecipeFragmentInteractionListener) context;
+        }
+        else {
+            throw new RuntimeException(context.toString() + " must implement OnRecipeFragmentInteractionListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mRecipeFragmentListener = null;
+    }
+
+    public interface OnRecipeFragmentInteractionListener {
+        public void onRecipePassData(Recipe recipe);
     }
 }

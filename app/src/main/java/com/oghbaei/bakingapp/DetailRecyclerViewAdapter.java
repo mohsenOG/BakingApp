@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.oghbaei.bakingapp.queryModel.Recipe;
 import com.oghbaei.bakingapp.queryModel.Step;
 
 import java.util.List;
@@ -21,14 +20,14 @@ import butterknife.ButterKnife;
  *
  */
 
-public class RecipeDetailRecyclerViewAdapter extends RecyclerView.Adapter<RecipeDetailRecyclerViewAdapter.ViewHolder> {
+public class DetailRecyclerViewAdapter extends RecyclerView.Adapter<DetailRecyclerViewAdapter.ViewHolder> {
 
     private List<Step> mSteps;
     private Context mContext;
-    private StepClickListener mStepClickListener;
+    private DetailClickListener mDetailClickListener;
 
-    public RecipeDetailRecyclerViewAdapter(List<Step> steps, Context context) {
-        mStepClickListener = null;
+    public DetailRecyclerViewAdapter(List<Step> steps, Context context) {
+        mDetailClickListener = null;
         mSteps = steps;
         mContext = context;
     }
@@ -36,7 +35,7 @@ public class RecipeDetailRecyclerViewAdapter extends RecyclerView.Adapter<Recipe
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_view_item_recipe_detail, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_view_item_detail, parent, false);
         return new ViewHolder(v, mContext);
     }
 
@@ -48,21 +47,21 @@ public class RecipeDetailRecyclerViewAdapter extends RecyclerView.Adapter<Recipe
     @Override
     public int getItemCount() { return mSteps.size(); }
 
-    void setStepClickListener(StepClickListener StepClickListener) {
-        mStepClickListener = StepClickListener;
+    void setStepClickListener(DetailClickListener DetailClickListener) {
+        mDetailClickListener = DetailClickListener;
     }
 
-    public interface StepClickListener {
+    public interface DetailClickListener {
         void onStepClick(String StepId);
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.tv_step_description) TextView stepDescription;
+        @BindView(R.id.tv_step_description) TextView mStepDescription;
         private Context mContext;
         private String stepId;
 
-        public ViewHolder(View itemView, Context context) {
+        public ViewHolder(final View itemView, Context context) {
             super(itemView);
             ButterKnife.bind(this, itemView);
 
@@ -71,22 +70,22 @@ public class RecipeDetailRecyclerViewAdapter extends RecyclerView.Adapter<Recipe
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (mStepClickListener != null && !stepId.isEmpty()) {
-                        mStepClickListener.onStepClick(stepId);
+                    if (mDetailClickListener != null && !stepId.isEmpty()) {
+                        mDetailClickListener.onStepClick(stepId);
                     }
                 }
             });
         }
 
-
         void bindingData(Step step) {
+            // TODO changing background color
             String stepShortDescription = step.getShortDescription();
             if (stepShortDescription != null && !stepShortDescription.isEmpty()) {
                 stepId = step.getId();
-                stepDescription.setText(stepShortDescription);
+                mStepDescription.setText(stepShortDescription);
             } else {
                 stepId = null;
-                stepDescription.setText(mContext.getString(R.string.no_name));
+                mStepDescription.setText(mContext.getString(R.string.no_name));
             }
         }
     }

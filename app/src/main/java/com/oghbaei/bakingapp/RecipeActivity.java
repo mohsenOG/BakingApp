@@ -1,6 +1,7 @@
 package com.oghbaei.bakingapp;
 
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
@@ -23,9 +24,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.oghbaei.bakingapp.RecipeFragment.ALL_RECIPES_KEY_BUNDLE;
+public class RecipeActivity extends AppCompatActivity implements RecipeFragment.OnRecipeFragmentInteractionListener {
 
-public class RecipeActivity extends AppCompatActivity {
+    public static final String RECIPE_KEY_RECIPE_ACT_TO_DETAIL_ACT = "RECIPE_KEY_RECIPE_ACT_TO_DETAIL_ACT";
 
     @BindView(R.id.tv_error_msg_display) TextView mErrorTextView;
     @BindView(R.id.pb_loading_indicator) ProgressBar mLoadingIndicator;
@@ -35,7 +36,7 @@ public class RecipeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_recipe);
         ButterKnife.bind(this);
 
         // Check if it is online.
@@ -73,10 +74,7 @@ public class RecipeActivity extends AppCompatActivity {
                 ArrayList<Recipe> recipes = response.body();
                 if (recipes == null || recipes.isEmpty()) return;
 
-                Bundle bundle = new Bundle();
-                bundle.putParcelableArrayList(ALL_RECIPES_KEY_BUNDLE, recipes);
-                RecipeFragment recipeFragment = new RecipeFragment();
-                recipeFragment.setArguments(bundle);
+                RecipeFragment recipeFragment = RecipeFragment.newInstance(recipes);
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 fragmentManager.beginTransaction()
                         .add(R.id.fl_recipe, recipeFragment)
@@ -96,5 +94,15 @@ public class RecipeActivity extends AppCompatActivity {
         if (view.getId() == R.id.btn_search_again) {
             queryDataFromWeb();
         }
+    }
+
+    @Override
+    public void onRecipePassData(Recipe recipe) {
+        //TODO Open the Detail Activity based on the phone layout.
+        // It should be detail fragment or DetailFragment + StepFragment.
+        Intent intent = new Intent(this, DetailActivity.class);
+        intent.putExtra(RECIPE_KEY_RECIPE_ACT_TO_DETAIL_ACT, recipe);
+        startActivity(intent);
+
     }
 }
