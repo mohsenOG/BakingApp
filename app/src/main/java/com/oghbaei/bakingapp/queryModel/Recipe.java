@@ -5,6 +5,7 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -31,6 +32,18 @@ public class Recipe implements Parcelable {
     public String getId() { return id; }
 
     public List<Step> getSteps() { return steps; }
+
+    public Step getStep(int stepId) {
+        return steps.get(stepId);
+    }
+
+    public List<Integer> listOfStepIds() {
+        List<Integer> ret = new ArrayList<>();
+        for (Step step: steps) {
+            ret.add(Integer.valueOf(step.getId()));
+        }
+        return ret;
+    }
 
     public List<Ingredient> getIngredients() {
         return ingredients;

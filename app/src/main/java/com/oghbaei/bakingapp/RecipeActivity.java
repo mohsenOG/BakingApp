@@ -98,8 +98,6 @@ public class RecipeActivity extends AppCompatActivity implements RecipeFragment.
 
     @Override
     public void onRecipePassData(Recipe recipe) {
-        //TODO Open the Detail Activity based on the phone layout.
-        // It should be detail fragment or DetailFragment + StepFragment.
         Intent intent = new Intent(this, DetailActivity.class);
         intent.putExtra(RECIPE_KEY_RECIPE_ACT_TO_DETAIL_ACT, recipe);
         startActivity(intent);

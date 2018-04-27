@@ -18,5 +18,10 @@
     <string name="retry">Retry</string>
 
     <string name="no_name">Unknown</string>
+    <string name="no_description">There is no description.</string>
+
+    <string name="no_previous_step">There is no previous step available.</string>
+    <string name="no_next_step">There is no next step available.</string>
+
 
 </resources>

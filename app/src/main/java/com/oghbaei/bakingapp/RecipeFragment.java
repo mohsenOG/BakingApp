@@ -17,6 +17,7 @@ import com.oghbaei.bakingapp.queryModel.Recipe;
 
 import java.util.ArrayList;
 
+import butterknife.BindBool;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -29,22 +30,19 @@ public class RecipeFragment extends Fragment implements RecipeRecyclerViewAdapte
 
     public static final String RECIPES_KEY_RECIPE_ACT_TO_RECIPE_FRAG = "RECIPES_KEY_RECIPE_ACT_TO_RECIPE_FRAG";
     private static final String KEY_LAYOUT_MANAGER = "layoutManager";
-    private static final int SPAN_COUNT = 2;
+    private static final int SPAN_COUNT = 3;
 
     private enum LayoutManagerType {
         GRID_LAYOUT_MANAGER,
         LINEAR_LAYOUT_MANAGER
     }
 
-    protected LayoutManagerType mCurrentLayoutManagerType;
-
-    @BindView(R.id.linear_layout_rb) protected RadioButton mLinearLayoutRadioButton;
-    @BindView(R.id.grid_layout_rb) protected RadioButton mGridLayoutRadioButton;
-
     @BindView(R.id.recyclerView_recipe) protected RecyclerView mRecipeRecyclerView;
-    protected RecipeRecyclerViewAdapter mRecyclerViewAdapter;
-    protected RecyclerView.LayoutManager mLayoutManager;
-    protected ArrayList<Recipe> mRecipes;
+    @BindBool(R.bool.isLarge) protected boolean mIsLargeScreen;
+    private LayoutManagerType mCurrentLayoutManagerType;
+    private RecipeRecyclerViewAdapter mRecyclerViewAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
+    private ArrayList<Recipe> mRecipes;
     private OnRecipeFragmentInteractionListener mRecipeFragmentListener;
 
     public static RecipeFragment newInstance(ArrayList<Recipe> recipes) {
@@ -64,7 +62,6 @@ public class RecipeFragment extends Fragment implements RecipeRecyclerViewAdapte
         if (getArguments() != null) {
             mRecipes = getArguments().getParcelableArrayList(RECIPES_KEY_RECIPE_ACT_TO_RECIPE_FRAG);
         }
-
     }
 
     @Override
@@ -74,7 +71,11 @@ public class RecipeFragment extends Fragment implements RecipeRecyclerViewAdapte
         ButterKnife.bind(this, rootView);
 
         mLayoutManager = new LinearLayoutManager(getActivity());
-        mCurrentLayoutManagerType = LayoutManagerType.LINEAR_LAYOUT_MANAGER;
+        if (mIsLargeScreen) {
+            mCurrentLayoutManagerType = LayoutManagerType.GRID_LAYOUT_MANAGER;
+        } else {
+            mCurrentLayoutManagerType = LayoutManagerType.LINEAR_LAYOUT_MANAGER;
+        }
 
         if (savedInstanceState != null) {
             // Restore saved layout manager type.
@@ -86,20 +87,6 @@ public class RecipeFragment extends Fragment implements RecipeRecyclerViewAdapte
         mRecyclerViewAdapter.setRecipeClickListener(this);
         mRecipeRecyclerView.setHasFixedSize(true);
         mRecipeRecyclerView.setAdapter(mRecyclerViewAdapter);
-
-        mLinearLayoutRadioButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setRecyclerViewLayoutManager(LayoutManagerType.LINEAR_LAYOUT_MANAGER);
-            }
-        });
-
-        mGridLayoutRadioButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setRecyclerViewLayoutManager(LayoutManagerType.GRID_LAYOUT_MANAGER);
-            }
-        });
 
         return rootView;
     }
