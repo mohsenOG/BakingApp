@@ -117,10 +117,20 @@ public class DetailActivity extends AppCompatActivity implements DetailFragment.
                 case 0: //Ingredients
                     return IngredientsFragment.newInstance(mRecipe);
                 case 1: // Details
-                    // TODO Show fragments base on device screen.
+                {
                     return DetailFragment.newInstance(mRecipe);
-                    default:
-                        throw new RuntimeException(this.toString() + "Wrong fragment!");
+
+                    // TODO Show fragments base on device screen.
+                    /*
+                    if (mIsLargeScreen) {
+
+                    } else {
+                        return DetailFragment.newInstance(mRecipe);
+                    }
+                    */
+                }
+                default:
+                    throw new RuntimeException(this.toString() + " Wrong fragment!");
             }
         }
 
