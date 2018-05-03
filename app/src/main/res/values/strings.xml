@@ -26,5 +26,8 @@
     <string name="no_previous_step">There is no previous step available.</string>
     <string name="no_next_step">There is no next step available.</string>
 
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 
 </resources>

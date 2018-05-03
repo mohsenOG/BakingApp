@@ -29,12 +29,14 @@ public class DetailRecyclerViewAdapter extends RecyclerView.Adapter<DetailRecycl
     private Context mContext;
     private DetailClickListener mDetailClickListener;
     private List<LinearLayout> sAllViews;
+    private boolean mIsScreenLarge;
 
     public DetailRecyclerViewAdapter(List<Step> steps, Context context) {
         sAllViews  = new ArrayList<>();
         mDetailClickListener = null;
         mSteps = steps;
         mContext = context;
+        mIsScreenLarge = mContext.getResources().getBoolean(R.bool.isLarge);
     }
 
     @NonNull
@@ -48,6 +50,10 @@ public class DetailRecyclerViewAdapter extends RecyclerView.Adapter<DetailRecycl
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.bindingData(mSteps.get(position));
         sAllViews.add(holder.mBackground);
+        // Set the checked color to first item if the screen is wide.
+        if (mIsScreenLarge && sAllViews.size() == 1) {
+            holder.mBackground.setSelected(true);
+        }
     }
 
     @Override

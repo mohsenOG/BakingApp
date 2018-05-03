@@ -40,7 +40,6 @@ public class StepFragment extends Fragment {
 
     public static final String RECIPE_KEY_DETAIL_ACT_TO_STEP_FRAG = "RECIPE_KEY_DETAIL_ACT_TO_STEP_FRAG";
     public static final String STEP_ID_KEY_DETAIL_ACT_TO_STEP_FRAG = "STEP_ID_KEY_DETAIL_ACT_TO_STEP_FRAG";
-    public static final String IS_LARGE_SCREEN_KEY_DETAIL_ACT_TO_STEP_FRAG = "IS_LARGE_SCREEN_KEY_DETAIL_ACT_TO_STEP_FRAG";
 
     private final String EXTRA_RECIPE = "EXTRA_RECIPE";
     private final String EXTRA_STEP_ID = "EXTRA_STEP_ID";
@@ -71,14 +70,15 @@ public class StepFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mIsLargeScreen = getArguments().getBoolean(IS_LARGE_SCREEN_KEY_DETAIL_ACT_TO_STEP_FRAG);
             mRecipe = getArguments().getParcelable(RECIPE_KEY_DETAIL_ACT_TO_STEP_FRAG);
             mStepId = getArguments().getString(STEP_ID_KEY_DETAIL_ACT_TO_STEP_FRAG);
         }
+        /*
         if (savedInstanceState != null) {
             mRecipe = savedInstanceState.getParcelable(EXTRA_RECIPE);
             mStepId = savedInstanceState.getString(EXTRA_STEP_ID);
         }
+        */
     }
 
     @Override
@@ -87,31 +87,36 @@ public class StepFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_step, container, false);
         ButterKnife.bind(this, rootView);
 
-        mPreviousStepButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int stepIdInt = Integer.valueOf(mStepId);
-                if (stepIdInt > 0) {
-                    int newStepId = stepIdInt - 1;
-                    mListener.onPreviousStepClicked(String.valueOf(newStepId));
-                } else {
-                    Toast.makeText(getContext(), getString(R.string.no_previous_step), Toast.LENGTH_LONG).show();
+        if (mIsLargeScreen) {
+          mPreviousStepButton.setVisibility(View.GONE);
+          mNextStepButton.setVisibility(View.GONE);
+        } else {
+            mPreviousStepButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int stepIdInt = Integer.valueOf(mStepId);
+                    if (stepIdInt > 0) {
+                        int newStepId = stepIdInt - 1;
+                        mListener.onPreviousStepClicked(String.valueOf(newStepId));
+                    } else {
+                        Toast.makeText(getContext(), getString(R.string.no_previous_step), Toast.LENGTH_LONG).show();
+                    }
                 }
-            }
-        });
-        mNextStepButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int lastStepInt = mRecipe.listOfStepIds().get(mRecipe.listOfStepIds().size() - 1);
-                int stepIdInt = Integer.valueOf(mStepId);
-                if (stepIdInt < lastStepInt) {
-                    int newStepId = stepIdInt + 1;
-                    mListener.onNextStepClicked(String.valueOf(newStepId));
-                } else {
-                    Toast.makeText(getContext(), getString(R.string.no_next_step), Toast.LENGTH_LONG).show();
+            });
+            mNextStepButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int lastStepInt = mRecipe.listOfStepIds().get(mRecipe.listOfStepIds().size() - 1);
+                    int stepIdInt = Integer.valueOf(mStepId);
+                    if (stepIdInt < lastStepInt) {
+                        int newStepId = stepIdInt + 1;
+                        mListener.onNextStepClicked(String.valueOf(newStepId));
+                    } else {
+                        Toast.makeText(getContext(), getString(R.string.no_next_step), Toast.LENGTH_LONG).show();
+                    }
                 }
-            }
-        });
+            });
+        }
 
         initDescriptionView();
         initMediaPlayer();
@@ -123,11 +128,12 @@ public class StepFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        mIsLargeScreen = getResources().getBoolean(R.bool.isLarge);
         if (context instanceof OnNextPreviousStepClickedListener) {
             mListener = (OnNextPreviousStepClickedListener) context;
         }
-        else {
-            throw new RuntimeException(context.toString() + " must implement OnNextPreviousStepClickedListener");
+        else if (!mIsLargeScreen){
+                throw new RuntimeException(context.toString() + " must implement OnNextPreviousStepClickedListener");
         }
     }
 
@@ -135,12 +141,16 @@ public class StepFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+        mPreviousStepButton.setVisibility(View.VISIBLE);
+        mNextStepButton.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
+        /*
         outState.putString(EXTRA_STEP_ID, mStepId);
         outState.putParcelable(EXTRA_RECIPE, mRecipe);
+        */
         super.onSaveInstanceState(outState);
 
     }

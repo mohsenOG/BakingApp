@@ -56,12 +56,14 @@ public class DetailFragment extends Fragment implements DetailRecyclerViewAdapte
         if (getArguments() != null) {
             mRecipe = getArguments().getParcelable(RECIPE_KEY_DETAIL_ACT_TO_DETAIL_FRAG);
         }
+        /*
         if (savedInstanceState != null) {
             mRecyclerViewState = savedInstanceState.getParcelable(STEPS_RECYCLER_VIEW_STATE);
             if (mRecipe == null) {
                 mRecipe = savedInstanceState.getParcelable(RECIPE_SAVE_INSTANCE);
             }
         }
+        */
     }
 
     @Override
@@ -82,8 +84,10 @@ public class DetailFragment extends Fragment implements DetailRecyclerViewAdapte
     @Override
     public void onSaveInstanceState(@NonNull Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
+        /*
         savedInstanceState.putParcelable(STEPS_RECYCLER_VIEW_STATE, mRecipeDetailRecyclerView.getLayoutManager().onSaveInstanceState());
         savedInstanceState.putParcelable(RECIPE_SAVE_INSTANCE, mRecipe);
+        */
     }
 
     @Override
