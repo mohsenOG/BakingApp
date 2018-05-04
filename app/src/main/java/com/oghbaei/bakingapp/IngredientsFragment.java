@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.oghbaei.bakingapp.Utils.Utils;
 import com.oghbaei.bakingapp.queryModel.Ingredient;
 import com.oghbaei.bakingapp.queryModel.Recipe;
 
@@ -55,23 +56,8 @@ public class IngredientsFragment extends Fragment {
 
     private void setIngredientsTextView() {
         List<Ingredient> ingredients = mRecipe.getIngredients();
-        StringBuilder stringBuilder = new StringBuilder();
-        for (Ingredient i : ingredients) {
-            String ingredientName = i.getIngredient();
-            if (ingredientName != null && !ingredientName.isEmpty()) {
-                stringBuilder.append(ingredientName).append(" ");
-                String measure = i.getMeasure();
-                if (measure != null && !measure.isEmpty()) {
-                    stringBuilder.append(measure).append(" ");
-                }
-                String quantity = i.getQuantity();
-                if (quantity != null && !quantity.isEmpty()) {
-                    stringBuilder.append(quantity);
-                }
-                stringBuilder.append("\n");
-            }
-        }
-        mIngredientsTextView.setText(stringBuilder.toString());
+        String ingredientsString = Utils.getIngredients(ingredients);
+        mIngredientsTextView.setText(ingredientsString);
     }
 
 }

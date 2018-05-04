@@ -2,6 +2,7 @@ package com.oghbaei.bakingapp;
 
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
@@ -98,6 +99,14 @@ public class RecipeActivity extends AppCompatActivity implements RecipeFragment.
 
     @Override
     public void onRecipePassData(Recipe recipe) {
+        // Send recipe to widget
+        SharedPreferences pref = getSharedPreferences("MyPref", 0);
+        SharedPreferences.Editor editor = pref.edit();
+        String ingredients = Utils.getIngredients(recipe.getIngredients());
+        editor.putString(getString(R.string.shared_preference_ingredients), ingredients);
+        editor.apply();
+        Utils.sendRecipeToWidget(this, recipe);
+        // Start DetailActivity
         Intent intent = new Intent(this, DetailActivity.class);
         intent.putExtra(RECIPE_KEY_RECIPE_ACT_TO_DETAIL_ACT, recipe);
         startActivity(intent);

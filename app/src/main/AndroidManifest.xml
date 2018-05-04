@@ -12,8 +12,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <!-- Recipe Activity -->
-        <activity android:name=".RecipeActivity"
+        <activity
+            android:name=".RecipeActivity"
             android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -32,12 +34,24 @@
                 android:value=".RecipeActivity" />
         </activity>
         <!-- Step Activity -->
-        <activity android:name=".StepActivity"
-            android:parentActivityName=".DetailActivity" >
+        <activity
+            android:name=".StepActivity"
+            android:parentActivityName=".DetailActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".DetailActivity" />
         </activity>
+        <!-- App Widget -->
+        <receiver android:name=".BakingAppWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="ACTION_INGREDIENTS_CHANGED"/>
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/baking_app_widget_info" />
+        </receiver>
     </application>
 
 </manifest>
