@@ -27,6 +27,18 @@ public class Recipe implements Parcelable {
     @SerializedName("image")
     private String image;
 
+    public void setId(String id) {this.id = id;}
+
+    public void setName(String name) { this.name = name; }
+
+    public void setIngredients(List<Ingredient> ingredients) { this.ingredients = ingredients; }
+
+    public void setSteps(List<Step> steps) { this.steps = steps; }
+
+    public void setServings(String servings) { this.servings = servings; }
+
+    public void setImage(String image) { this.image = image; }
+
     public String getName() { return name; }
 
     public String getId() { return id; }

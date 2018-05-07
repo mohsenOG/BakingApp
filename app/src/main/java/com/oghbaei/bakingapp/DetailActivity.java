@@ -1,6 +1,7 @@
 package com.oghbaei.bakingapp;
 
 import android.content.Intent;
+
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
@@ -28,11 +29,10 @@ public class DetailActivity extends AppCompatActivity implements DetailFragment.
 
     private static final String VIEW_PAGER_ID = "VIEW_PAGER_ID";
 
-
     @BindView(R.id.cp_container) protected ViewPager mViewPager;
     @BindBool(R.bool.isLarge) protected boolean mIsLargeScreen;
     protected SectionsPagerAdapter mSectionsPagerAdapter;
-    private Recipe mRecipe;
+    protected Recipe mRecipe;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -140,8 +140,5 @@ public class DetailActivity extends AppCompatActivity implements DetailFragment.
         public DetailStepWideScreenFragment getCurrentFragment() {
             return currentFragment;
         }
-
-
     }
-
 }

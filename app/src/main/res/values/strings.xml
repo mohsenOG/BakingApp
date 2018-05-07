@@ -1,14 +1,8 @@
 <resources>
     <string name="app_name">Baking App</string>
 
-
-    <string name="grid_layout_manager">Grid Layout Manager</string>
-    <string name="linear_layout_manager">Linear Layout Manager</string>
-
-
     <string name="tmp_recipe_name">Recipe Name</string>
     <string name="tmp_step_name">Recipe Name</string>
-    <string name="thumbnail_default_description">The recipe description</string>
     <string name="no_internet">There is no internet connection.</string>
     <string name="ingredients">Ingredients</string>
     <string name="Steps">Steps</string>
@@ -20,7 +14,6 @@
     <string name="no_name">Unknown</string>
     <string name="no_description">There is no description.</string>
     <string name="no_step_title">Step</string>
-    <string name="no_ingredients">There is no ingredients available.</string>
 
     <string name="next_step">Next step</string>
     <string name="previous_step">Previous step</string>
@@ -29,7 +22,6 @@
 
     <string name="appwidget_content_description">Baking App widget.</string>
     <string name="no_widget_text">There is no recipe available.</string>
-    <string name="updating_widget">Updating widget. Please wait!</string>
 
 
     <string name="shared_preference_ingredients" translatable="false">shared_preference_ingredients</string>

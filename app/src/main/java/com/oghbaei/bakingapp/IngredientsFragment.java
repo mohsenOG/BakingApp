@@ -59,5 +59,4 @@ public class IngredientsFragment extends Fragment {
         String ingredientsString = Utils.getIngredients(ingredients);
         mIngredientsTextView.setText(ingredientsString);
     }
-
 }
