@@ -29,14 +29,13 @@ import butterknife.ButterKnife;
 
 public class DetailFragment extends Fragment implements DetailRecyclerViewAdapter.DetailClickListener {
 
-    public static final String STEPS_RECYCLER_VIEW_STATE = "STEPS_RECYCLER_VIEW_STATE";
     public static final String RECIPE_SAVE_INSTANCE = "RECIPE_SAVE_INSTANCE";
+    public static final String RECYCLE_VIEW_SAVE_STATE = "RECYCLE_VIEW_SAVE_STATE";
     public static final String RECIPE_KEY_DETAIL_ACT_TO_DETAIL_FRAG = "RECIPE_KEY_DETAIL_ACT_TO_DETAIL_FRAG";
 
     @BindView(R.id.recyclerView_steps) RecyclerView mRecipeDetailRecyclerView;
     private DetailRecyclerViewAdapter mAdapter;
     private Recipe mRecipe;
-    private Parcelable mRecyclerViewState;
     private OnDetailFragmentInteractionListener mDetailFragmentListener;
 
     public DetailFragment() {}
@@ -56,14 +55,15 @@ public class DetailFragment extends Fragment implements DetailRecyclerViewAdapte
         if (getArguments() != null) {
             mRecipe = getArguments().getParcelable(RECIPE_KEY_DETAIL_ACT_TO_DETAIL_FRAG);
         }
-        /*
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         if (savedInstanceState != null) {
-            mRecyclerViewState = savedInstanceState.getParcelable(STEPS_RECYCLER_VIEW_STATE);
-            if (mRecipe == null) {
-                mRecipe = savedInstanceState.getParcelable(RECIPE_SAVE_INSTANCE);
-            }
+            mRecipeDetailRecyclerView.getLayoutManager().onRestoreInstanceState(savedInstanceState.getParcelable(RECYCLE_VIEW_SAVE_STATE));
+            mRecipe = savedInstanceState.getParcelable(RECIPE_SAVE_INSTANCE);
         }
-        */
+        super.onActivityCreated(savedInstanceState);
     }
 
     @Override
@@ -83,11 +83,9 @@ public class DetailFragment extends Fragment implements DetailRecyclerViewAdapte
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle savedInstanceState) {
-        super.onSaveInstanceState(savedInstanceState);
-        /*
-        savedInstanceState.putParcelable(STEPS_RECYCLER_VIEW_STATE, mRecipeDetailRecyclerView.getLayoutManager().onSaveInstanceState());
+        savedInstanceState.putParcelable(RECYCLE_VIEW_SAVE_STATE, mRecipeDetailRecyclerView.getLayoutManager().onSaveInstanceState());
         savedInstanceState.putParcelable(RECIPE_SAVE_INSTANCE, mRecipe);
-        */
+        super.onSaveInstanceState(savedInstanceState);
     }
 
     @Override
@@ -106,7 +104,6 @@ public class DetailFragment extends Fragment implements DetailRecyclerViewAdapte
         mDetailFragmentListener = null;
     }
 
-
     private void initRecyclerView() {
         mRecipeDetailRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecipeDetailRecyclerView.setHasFixedSize(true);
@@ -114,9 +111,6 @@ public class DetailFragment extends Fragment implements DetailRecyclerViewAdapte
         mAdapter = new DetailRecyclerViewAdapter(steps, getContext());
         mAdapter.setStepClickListener(this);
         mRecipeDetailRecyclerView.setAdapter(mAdapter);
-        if (mRecyclerViewState != null) {
-            mRecipeDetailRecyclerView.getLayoutManager().onRestoreInstanceState(mRecyclerViewState);
-        }
     }
 
     public interface OnDetailFragmentInteractionListener {

@@ -2,9 +2,6 @@ package com.oghbaei.bakingapp;
 
 import android.content.Intent;
 import android.support.design.widget.TabLayout;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -15,8 +12,6 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.FrameLayout;
 
 import com.oghbaei.bakingapp.queryModel.Recipe;
 
@@ -26,24 +21,29 @@ import butterknife.ButterKnife;
 
 import static com.oghbaei.bakingapp.RecipeActivity.RECIPE_KEY_RECIPE_ACT_TO_DETAIL_ACT;
 import static com.oghbaei.bakingapp.StepActivity.RECIPE_KEY_DETAIL_ACT_TO_STEP_ACT;
-import static com.oghbaei.bakingapp.StepActivity.RECIPE_KEY_FROM_STEP_ACT_TO_DETAIL_ACT;
 import static com.oghbaei.bakingapp.StepActivity.STEP_ID_KEY_DETAIL_ACT_TO_STEP_ACT;
 
 
 public class DetailActivity extends AppCompatActivity implements DetailFragment.OnDetailFragmentInteractionListener {
 
-    public static final String EXTRA_RECIPE_SAVE_INSTANCE_DETAIL_ACT = "EXTRA_RECIPE_SAVE_INSTANCE_DETAIL_ACT";
+    private static final String VIEW_PAGER_ID = "VIEW_PAGER_ID";
+
 
     @BindView(R.id.cp_container) protected ViewPager mViewPager;
+    @BindBool(R.bool.isLarge) protected boolean mIsLargeScreen;
     protected SectionsPagerAdapter mSectionsPagerAdapter;
     private Recipe mRecipe;
-    @BindBool(R.bool.isLarge) protected boolean mIsLargeScreen;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
         ButterKnife.bind(this);
+
+        int viewPagerId = -1;
+        if (savedInstanceState != null) {
+            viewPagerId = savedInstanceState.getInt(VIEW_PAGER_ID, -1);
+        }
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -59,7 +59,12 @@ public class DetailActivity extends AppCompatActivity implements DetailFragment.
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        if (viewPagerId != -1) {
+            mViewPager.setId(viewPagerId);
+        }
         mViewPager.setAdapter(mSectionsPagerAdapter);
+        mViewPager.setOffscreenPageLimit(10); // make a big enough number to be sure that Adapter will cache the fragment references.
+        // Look at https://stackoverflow.com/a/9646622/6072457
 
         TabLayout tabLayout = findViewById(R.id.tabs);
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
@@ -91,20 +96,8 @@ public class DetailActivity extends AppCompatActivity implements DetailFragment.
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        //outState.putParcelable(EXTRA_RECIPE_SAVE_INSTANCE_DETAIL_ACT, mRecipe);
         super.onSaveInstanceState(outState);
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-/*
-        mRecipe = savedInstanceState.getParcelable(EXTRA_RECIPE_SAVE_INSTANCE_DETAIL_ACT);
-        String title = mRecipe.getName();
-        if (title != null && !title.isEmpty()) {
-            this.setTitle(mRecipe.getName());
-        }
-        */
+        outState.putInt(VIEW_PAGER_ID, mViewPager.getId());
     }
 
     /**
@@ -112,6 +105,7 @@ public class DetailActivity extends AppCompatActivity implements DetailFragment.
      * one of the sections/tabs/pages.
      */
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
+
         private DetailStepWideScreenFragment currentFragment;
 
         public SectionsPagerAdapter(FragmentManager fm) {
@@ -146,6 +140,7 @@ public class DetailActivity extends AppCompatActivity implements DetailFragment.
         public DetailStepWideScreenFragment getCurrentFragment() {
             return currentFragment;
         }
+
 
     }
 

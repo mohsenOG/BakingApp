@@ -86,12 +86,17 @@ public class DetailRecyclerViewAdapter extends RecyclerView.Adapter<DetailRecycl
                     if (mDetailClickListener != null && !stepId.isEmpty()) {
                         mDetailClickListener.onStepClick(stepId);
                     }
-                    // Set all views background color to white.
-                    for (LinearLayout layout : sAllViews) {
-                        layout.setSelected(false);
+                    if (mIsScreenLarge) {
+                        // Set all views background color to white.
+                        for (LinearLayout layout : sAllViews) {
+                            layout.setSelected(false);
+                        }
+                        // change the color of selected item.
+                        mBackground.setSelected(true);
                     }
-                    // change the color of selected item.
-                    mBackground.setSelected(true);
+                    else {
+                        mBackground.setSelected(false);
+                    }
                 }
             });
         }

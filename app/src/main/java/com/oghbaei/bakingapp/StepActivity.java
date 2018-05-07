@@ -17,12 +17,9 @@ public class StepActivity extends AppCompatActivity implements StepFragment.OnNe
 
     public static final String RECIPE_KEY_DETAIL_ACT_TO_STEP_ACT = "RECIPE_KEY_DETAIL_ACT_TO_STEP_ACT";
     public static final String STEP_ID_KEY_DETAIL_ACT_TO_STEP_ACT = "STEP_ID_KEY_DETAIL_ACT_TO_STEP_ACT";
-    public static final String RECIPE_KEY_FROM_STEP_ACT_TO_DETAIL_ACT = "RECIPE_KEY_FROM_STEP_ACT_TO_DETAIL_ACT";
-
 
     private Recipe mRecipe;
     private String mStepId;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,8 +53,6 @@ public class StepActivity extends AppCompatActivity implements StepFragment.OnNe
         }
         return super.onOptionsItemSelected(item);
     }
-
-
 
     @Override
     public void onPreviousStepClicked(String previousStepId) {

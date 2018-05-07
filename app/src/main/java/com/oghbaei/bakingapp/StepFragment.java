@@ -41,9 +41,6 @@ public class StepFragment extends Fragment {
     public static final String RECIPE_KEY_DETAIL_ACT_TO_STEP_FRAG = "RECIPE_KEY_DETAIL_ACT_TO_STEP_FRAG";
     public static final String STEP_ID_KEY_DETAIL_ACT_TO_STEP_FRAG = "STEP_ID_KEY_DETAIL_ACT_TO_STEP_FRAG";
 
-    private final String EXTRA_RECIPE = "EXTRA_RECIPE";
-    private final String EXTRA_STEP_ID = "EXTRA_STEP_ID";
-
     @BindView(R.id.sepv_video_player) SimpleExoPlayerView mExoPlayerView;
     @BindView(R.id.tv_step_description) TextView mDescriptionTextView;
     @BindView(R.id.btn_previous_step) Button mPreviousStepButton;
@@ -73,12 +70,6 @@ public class StepFragment extends Fragment {
             mRecipe = getArguments().getParcelable(RECIPE_KEY_DETAIL_ACT_TO_STEP_FRAG);
             mStepId = getArguments().getString(STEP_ID_KEY_DETAIL_ACT_TO_STEP_FRAG);
         }
-        /*
-        if (savedInstanceState != null) {
-            mRecipe = savedInstanceState.getParcelable(EXTRA_RECIPE);
-            mStepId = savedInstanceState.getString(EXTRA_STEP_ID);
-        }
-        */
     }
 
     @Override
@@ -143,16 +134,6 @@ public class StepFragment extends Fragment {
         mListener = null;
         mPreviousStepButton.setVisibility(View.VISIBLE);
         mNextStepButton.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        /*
-        outState.putString(EXTRA_STEP_ID, mStepId);
-        outState.putParcelable(EXTRA_RECIPE, mRecipe);
-        */
-        super.onSaveInstanceState(outState);
-
     }
 
     @Override

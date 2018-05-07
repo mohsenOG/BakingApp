@@ -53,7 +53,10 @@ public class BakingAppWidget extends AppWidgetProvider {
 
     @Override
     public void onEnabled(Context context) {
-        // Enter relevant functionality for when the first widget is created
+        RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.baking_app_widget);
+        SharedPreferences sharedPreferences = context.getSharedPreferences("MyPref", 0);
+        String ingredients = sharedPreferences.getString(context.getString(R.string.shared_preference_ingredients), context.getString(R.string.no_widget_text));
+        remoteViews.setTextViewText(R.id.tv_appwidget, ingredients);
     }
 
     @Override
