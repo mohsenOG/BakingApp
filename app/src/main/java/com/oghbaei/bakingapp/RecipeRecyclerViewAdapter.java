@@ -22,8 +22,8 @@ import butterknife.ButterKnife;
 
 public class RecipeRecyclerViewAdapter extends RecyclerView.Adapter<RecipeRecyclerViewAdapter.ViewHolder>{
 
-    private ArrayList<Recipe> mRecipes;
-    private Context mContext;
+    private final ArrayList<Recipe> mRecipes;
+    private final Context mContext;
     private RecipeClickListener mRecipeClickListener;
 
     public RecipeRecyclerViewAdapter(ArrayList<Recipe> recipes, Context context) {
@@ -61,7 +61,7 @@ public class RecipeRecyclerViewAdapter extends RecyclerView.Adapter<RecipeRecycl
 
     class ViewHolder extends RecyclerView.ViewHolder {
          @BindView(R.id.tv_recipe_name) TextView recipeNameTextView;
-         private Context mContext;
+         private final Context mContext;
          private String recipeId;
 
         ViewHolder(View v, Context context) {

@@ -1,7 +1,6 @@
 package com.oghbaei.bakingapp;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -11,7 +10,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RadioButton;
 
 import com.oghbaei.bakingapp.queryModel.Recipe;
 
@@ -28,7 +26,7 @@ import butterknife.ButterKnife;
 
 public class RecipeFragment extends Fragment implements RecipeRecyclerViewAdapter.RecipeClickListener {
 
-    public static final String RECIPES_KEY_RECIPE_ACT_TO_RECIPE_FRAG = "RECIPES_KEY_RECIPE_ACT_TO_RECIPE_FRAG";
+    private static final String RECIPES_KEY_RECIPE_ACT_TO_RECIPE_FRAG = "RECIPES_KEY_RECIPE_ACT_TO_RECIPE_FRAG";
     private static final String KEY_LAYOUT_MANAGER = "layoutManager";
     private static final int SPAN_COUNT = 3;
 
@@ -40,7 +38,6 @@ public class RecipeFragment extends Fragment implements RecipeRecyclerViewAdapte
     @BindView(R.id.recyclerView_recipe) protected RecyclerView mRecipeRecyclerView;
     @BindBool(R.bool.isLarge) protected boolean mIsLargeScreen;
     private LayoutManagerType mCurrentLayoutManagerType;
-    private RecipeRecyclerViewAdapter mRecyclerViewAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private ArrayList<Recipe> mRecipes;
     private OnRecipeFragmentInteractionListener mRecipeFragmentListener;
@@ -83,7 +80,7 @@ public class RecipeFragment extends Fragment implements RecipeRecyclerViewAdapte
         }
         setRecyclerViewLayoutManager(mCurrentLayoutManagerType);
 
-        mRecyclerViewAdapter = new RecipeRecyclerViewAdapter(mRecipes, getContext());
+        RecipeRecyclerViewAdapter mRecyclerViewAdapter = new RecipeRecyclerViewAdapter(mRecipes, getContext());
         mRecyclerViewAdapter.setRecipeClickListener(this);
         mRecipeRecyclerView.setHasFixedSize(true);
         mRecipeRecyclerView.setAdapter(mRecyclerViewAdapter);
@@ -96,12 +93,7 @@ public class RecipeFragment extends Fragment implements RecipeRecyclerViewAdapte
         mRecipeFragmentListener.onRecipePassData(mRecipes.get(Integer.parseInt(recipeId) - 1));
     }
 
-    /**
-     * Set RecyclerView's LayoutManager to the one given.
-     *
-     * @param layoutManagerType Type of layout manager to switch to.
-     */
-    public void setRecyclerViewLayoutManager(LayoutManagerType layoutManagerType) {
+    private void setRecyclerViewLayoutManager(LayoutManagerType layoutManagerType) {
         int scrollPosition = 0;
 
         // If a layout manager has already been set, get current scroll position.
@@ -152,6 +144,6 @@ public class RecipeFragment extends Fragment implements RecipeRecyclerViewAdapte
     }
 
     public interface OnRecipeFragmentInteractionListener {
-        public void onRecipePassData(Recipe recipe);
+        void onRecipePassData(Recipe recipe);
     }
 }

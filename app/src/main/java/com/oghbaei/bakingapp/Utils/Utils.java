@@ -1,18 +1,10 @@
 package com.oghbaei.bakingapp.Utils;
 
-import android.app.Notification;
-import android.app.NotificationManager;
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
 
-import com.oghbaei.bakingapp.BakingAppWidget;
 import com.oghbaei.bakingapp.queryModel.Ingredient;
-import com.oghbaei.bakingapp.queryModel.Recipe;
 
 import java.util.List;
 
@@ -38,7 +30,7 @@ public class Utils {
 
     /**
      *
-     * @param ingredients
+     * @param ingredients --
      * @return string consist of ingredients with line break at the end of each ingredient.
      */
     public static String getIngredients(List<Ingredient> ingredients) {
@@ -61,9 +53,4 @@ public class Utils {
         return stringBuilder.toString();
     }
 
-    public static void sendRecipeToWidget(Context context, Recipe recipe) {
-        Intent intent = new Intent(BakingAppWidget.ACTION_INGREDIENTS_CHANGED);
-        //intent.putExtra(RECIPE_KEY_FROM_EVERYWHERE_TO_WIDGET, recipe);
-        context.sendBroadcast(intent);
-    }
 }

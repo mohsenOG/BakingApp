@@ -2,7 +2,6 @@ package com.oghbaei.bakingapp;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,9 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
-import com.oghbaei.bakingapp.queryModel.Ingredient;
 import com.oghbaei.bakingapp.queryModel.Recipe;
 import com.oghbaei.bakingapp.queryModel.Step;
 
@@ -29,12 +26,11 @@ import butterknife.ButterKnife;
 
 public class DetailFragment extends Fragment implements DetailRecyclerViewAdapter.DetailClickListener {
 
-    public static final String RECIPE_SAVE_INSTANCE = "RECIPE_SAVE_INSTANCE";
-    public static final String RECYCLE_VIEW_SAVE_STATE = "RECYCLE_VIEW_SAVE_STATE";
-    public static final String RECIPE_KEY_DETAIL_ACT_TO_DETAIL_FRAG = "RECIPE_KEY_DETAIL_ACT_TO_DETAIL_FRAG";
+    private static final String RECIPE_SAVE_INSTANCE = "RECIPE_SAVE_INSTANCE";
+    private static final String RECYCLE_VIEW_SAVE_STATE = "RECYCLE_VIEW_SAVE_STATE";
+    private static final String RECIPE_KEY_DETAIL_ACT_TO_DETAIL_FRAG = "RECIPE_KEY_DETAIL_ACT_TO_DETAIL_FRAG";
 
     @BindView(R.id.recyclerView_steps) RecyclerView mRecipeDetailRecyclerView;
-    private DetailRecyclerViewAdapter mAdapter;
     private Recipe mRecipe;
     private OnDetailFragmentInteractionListener mDetailFragmentListener;
 
@@ -108,11 +104,11 @@ public class DetailFragment extends Fragment implements DetailRecyclerViewAdapte
         mRecipeDetailRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecipeDetailRecyclerView.setHasFixedSize(true);
         List<Step> steps = mRecipe.getSteps();
-        mAdapter = new DetailRecyclerViewAdapter(steps, getContext());
+        DetailRecyclerViewAdapter mAdapter = new DetailRecyclerViewAdapter(steps, getContext());
         mAdapter.setStepClickListener(this);
         mRecipeDetailRecyclerView.setAdapter(mAdapter);
     }
 
     public interface OnDetailFragmentInteractionListener {
-        public void onDetailPassData(String StepId);
+        void onDetailPassData(String StepId);
     }}

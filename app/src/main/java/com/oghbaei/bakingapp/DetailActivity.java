@@ -16,6 +16,8 @@ import android.view.MenuItem;
 
 import com.oghbaei.bakingapp.queryModel.Recipe;
 
+import java.util.Objects;
+
 import butterknife.BindBool;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -31,8 +33,8 @@ public class DetailActivity extends AppCompatActivity implements DetailFragment.
 
     @BindView(R.id.cp_container) protected ViewPager mViewPager;
     @BindBool(R.bool.isLarge) protected boolean mIsLargeScreen;
-    protected SectionsPagerAdapter mSectionsPagerAdapter;
-    protected Recipe mRecipe;
+    private SectionsPagerAdapter mSectionsPagerAdapter;
+    private Recipe mRecipe;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +50,7 @@ public class DetailActivity extends AppCompatActivity implements DetailFragment.
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             mRecipe = extras.getParcelable(RECIPE_KEY_RECIPE_ACT_TO_DETAIL_ACT);
-            String title = mRecipe.getName();
+            String title = mRecipe != null ? mRecipe.getName() : null;
             if (title != null && !title.isEmpty()) {
                 this.setTitle(mRecipe.getName());
             }
@@ -56,7 +58,7 @@ public class DetailActivity extends AppCompatActivity implements DetailFragment.
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
         if (viewPagerId != -1) {
@@ -108,7 +110,7 @@ public class DetailActivity extends AppCompatActivity implements DetailFragment.
 
         private DetailStepWideScreenFragment currentFragment;
 
-        public SectionsPagerAdapter(FragmentManager fm) {
+        SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
             currentFragment = null;
         }
@@ -137,7 +139,7 @@ public class DetailActivity extends AppCompatActivity implements DetailFragment.
         @Override
         public int getCount() { return 2; }
 
-        public DetailStepWideScreenFragment getCurrentFragment() {
+        DetailStepWideScreenFragment getCurrentFragment() {
             return currentFragment;
         }
     }

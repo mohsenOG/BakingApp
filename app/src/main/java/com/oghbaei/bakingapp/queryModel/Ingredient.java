@@ -43,9 +43,6 @@ public class Ingredient implements Parcelable {
         dest.writeString(this.ingredient);
     }
 
-    public Ingredient() {
-    }
-
     protected Ingredient(Parcel in) {
         this.quantity = in.readString();
         this.measure = in.readString();

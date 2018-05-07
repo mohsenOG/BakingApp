@@ -2,6 +2,7 @@ package com.oghbaei.bakingapp;
 
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -14,8 +15,8 @@ import com.oghbaei.bakingapp.queryModel.Recipe;
 
 public class DetailStepWideScreenFragment extends Fragment {
 
-    public static final String RECIPE_KEY_DETAIL_ACT_TO_WRAP_FRAG = "RECIPE_KEY_DETAIL_ACT_TO_WRAP_FRAG";
-    public static final String STEP_ID_KEY_DETAIL_ACT_TO_WRAP_FRAG = "STEP_ID_KEY_DETAIL_ACT_TO_WRAP_FRAG";
+    private static final String RECIPE_KEY_DETAIL_ACT_TO_WRAP_FRAG = "RECIPE_KEY_DETAIL_ACT_TO_WRAP_FRAG";
+    private static final String STEP_ID_KEY_DETAIL_ACT_TO_WRAP_FRAG = "STEP_ID_KEY_DETAIL_ACT_TO_WRAP_FRAG";
 
 
     private Recipe mRecipe;
@@ -43,7 +44,7 @@ public class DetailStepWideScreenFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_detail_step_wide_screen, container, false);
 

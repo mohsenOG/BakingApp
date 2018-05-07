@@ -105,7 +105,6 @@ public class RecipeActivity extends AppCompatActivity implements RecipeFragment.
         String ingredients = Utils.getIngredients(recipe.getIngredients());
         editor.putString(getString(R.string.shared_preference_ingredients), ingredients);
         editor.apply();
-        Utils.sendRecipeToWidget(this, recipe);
         // Start DetailActivity
         Intent intent = new Intent(this, DetailActivity.class);
         intent.putExtra(RECIPE_KEY_RECIPE_ACT_TO_DETAIL_ACT, recipe);

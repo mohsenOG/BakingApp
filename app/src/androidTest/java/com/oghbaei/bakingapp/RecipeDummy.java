@@ -1,7 +1,5 @@
 package com.oghbaei.bakingapp;
 
-import android.os.Bundle;
-
 import com.oghbaei.bakingapp.queryModel.Ingredient;
 import com.oghbaei.bakingapp.queryModel.Recipe;
 import com.oghbaei.bakingapp.queryModel.Step;

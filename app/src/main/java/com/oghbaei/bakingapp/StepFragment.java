@@ -38,8 +38,8 @@ import butterknife.ButterKnife;
 
 public class StepFragment extends Fragment {
 
-    public static final String RECIPE_KEY_DETAIL_ACT_TO_STEP_FRAG = "RECIPE_KEY_DETAIL_ACT_TO_STEP_FRAG";
-    public static final String STEP_ID_KEY_DETAIL_ACT_TO_STEP_FRAG = "STEP_ID_KEY_DETAIL_ACT_TO_STEP_FRAG";
+    private static final String RECIPE_KEY_DETAIL_ACT_TO_STEP_FRAG = "RECIPE_KEY_DETAIL_ACT_TO_STEP_FRAG";
+    private static final String STEP_ID_KEY_DETAIL_ACT_TO_STEP_FRAG = "STEP_ID_KEY_DETAIL_ACT_TO_STEP_FRAG";
 
     @BindView(R.id.sepv_video_player) SimpleExoPlayerView mExoPlayerView;
     @BindView(R.id.tv_step_description) TextView mDescriptionTextView;
@@ -180,7 +180,7 @@ public class StepFragment extends Fragment {
             mSimpleExpPlayer.prepare(mediaSource);
             mSimpleExpPlayer.setPlayWhenReady(true);
 
-            // Check to show it full screen or nornal
+            // Check to show it full screen or normal
             int orientation = getResources().getConfiguration().orientation;
             if (orientation == Configuration.ORIENTATION_LANDSCAPE && !mIsLargeScreen) {
                 mExoPlayerView.getLayoutParams().height = ViewGroup.LayoutParams.MATCH_PARENT;
@@ -200,7 +200,7 @@ public class StepFragment extends Fragment {
     }
 
     public interface OnNextPreviousStepClickedListener {
-        public void onPreviousStepClicked(String previousStepId);
-        public void onNextStepClicked(String NextStepId);
+        void onPreviousStepClicked(String previousStepId);
+        void onNextStepClicked(String NextStepId);
     }
 }

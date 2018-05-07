@@ -22,7 +22,7 @@ import butterknife.ButterKnife;
 
 public class IngredientsFragment extends Fragment {
 
-    public static final String RECIPE_KEY_DETAIL_ACT_TO_INGREDIENTS_FRAG = "RECIPE_KEY_DETAIL_ACT_TO_INGREDIENTS_FRAG";
+    private static final String RECIPE_KEY_DETAIL_ACT_TO_INGREDIENTS_FRAG = "RECIPE_KEY_DETAIL_ACT_TO_INGREDIENTS_FRAG";
 
     @BindView(R.id.tv_ingredients) TextView mIngredientsTextView;
     private Recipe mRecipe;

@@ -8,6 +8,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.widget.RemoteViews;
 
+import java.util.Objects;
+
 /**
  * Implementation of App Widget functionality.
  */
@@ -17,7 +19,7 @@ public class BakingAppWidget extends AppWidgetProvider {
     private String mIngredients;
 
 
-    public static void updateAppWidget(Context context,AppWidgetManager appWidgetManager, int appWidgetId, String ingredients) {
+    private static void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId, String ingredients) {
                 RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.baking_app_widget);
                 if (ingredients != null && !ingredients.isEmpty()) {
                     remoteViews.setTextViewText(R.id.tv_appwidget, ingredients);
@@ -36,7 +38,7 @@ public class BakingAppWidget extends AppWidgetProvider {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        if (intent != null && intent.getAction().equals(ACTION_INGREDIENTS_CHANGED)) {
+        if (intent != null && Objects.requireNonNull(intent.getAction()).equals(ACTION_INGREDIENTS_CHANGED)) {
             SharedPreferences sharedPreferences = context.getSharedPreferences("MyPref", 0);
             mIngredients = sharedPreferences.getString(context.getString(R.string.shared_preference_ingredients), context.getString(R.string.no_widget_text));
         } else {

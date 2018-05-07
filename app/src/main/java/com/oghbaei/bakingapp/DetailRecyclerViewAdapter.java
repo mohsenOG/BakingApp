@@ -3,7 +3,6 @@ package com.oghbaei.bakingapp;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,11 +24,11 @@ import butterknife.ButterKnife;
 
 public class DetailRecyclerViewAdapter extends RecyclerView.Adapter<DetailRecyclerViewAdapter.ViewHolder> {
 
-    private List<Step> mSteps;
-    private Context mContext;
+    private final List<Step> mSteps;
+    private final Context mContext;
     private DetailClickListener mDetailClickListener;
-    private List<LinearLayout> sAllViews;
-    private boolean mIsScreenLarge;
+    private final List<LinearLayout> sAllViews;
+    private final boolean mIsScreenLarge;
 
     public DetailRecyclerViewAdapter(List<Step> steps, Context context) {
         sAllViews  = new ArrayList<>();
@@ -70,11 +69,11 @@ public class DetailRecyclerViewAdapter extends RecyclerView.Adapter<DetailRecycl
     class ViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.tv_step_description) TextView mStepDescription;
-        @BindView(R.id.ll_detail_recylcer_view_item) LinearLayout mBackground;
-        private Context mContext;
+        @BindView(R.id.ll_detail_recycler_view_item) LinearLayout mBackground;
+        private final Context mContext;
         private String stepId;
 
-        public ViewHolder(final View itemView, Context context) {
+        ViewHolder(final View itemView, Context context) {
             super(itemView);
             ButterKnife.bind(this, itemView);
 
