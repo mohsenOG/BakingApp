@@ -14,6 +14,7 @@
     <string name="no_name">Unknown</string>
     <string name="no_description">There is no description.</string>
     <string name="no_step_title">Step</string>
+    <string name="thumbnail_content">Step thumbnail</string>
 
     <string name="next_step">Next step</string>
     <string name="previous_step">Previous step</string>

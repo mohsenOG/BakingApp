@@ -40,6 +40,8 @@ public class StepFragment extends Fragment {
 
     private static final String RECIPE_KEY_DETAIL_ACT_TO_STEP_FRAG = "RECIPE_KEY_DETAIL_ACT_TO_STEP_FRAG";
     private static final String STEP_ID_KEY_DETAIL_ACT_TO_STEP_FRAG = "STEP_ID_KEY_DETAIL_ACT_TO_STEP_FRAG";
+    private static final String SAVE_STATE_PLAYER_PLAYED_WHEN_READY = "SAVE_STATE_PLAYER_PLAYED_WHEN_READY";
+    private static final String SAVE_STATE_PAUSE_TIME = "SAVE_STATE_PAUSE_TIME";
 
     @BindView(R.id.sepv_video_player) SimpleExoPlayerView mExoPlayerView;
     @BindView(R.id.tv_step_description) TextView mDescriptionTextView;
@@ -51,6 +53,9 @@ public class StepFragment extends Fragment {
     private String mStepId;
     private SimpleExoPlayer mSimpleExpPlayer;
     @BindBool(R.bool.isLarge) boolean mIsLargeScreen;
+    private boolean mIsPlayerReady = true;
+    private long mPlayerPausePosition = -1;
+    private boolean mIsPlayerPaused = false;
 
     public StepFragment() {}
 
@@ -109,11 +114,25 @@ public class StepFragment extends Fragment {
             });
         }
 
+        if (savedInstanceState != null) {
+            mIsPlayerPaused = true;
+            mIsPlayerReady = savedInstanceState.getBoolean(SAVE_STATE_PLAYER_PLAYED_WHEN_READY, true);
+            mPlayerPausePosition = savedInstanceState.getLong(SAVE_STATE_PAUSE_TIME, -1);
+        }
+
         initDescriptionView();
         initMediaPlayer();
 
-
         return rootView;
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        boolean isReady = mSimpleExpPlayer.getPlayWhenReady();
+        outState.putBoolean(SAVE_STATE_PLAYER_PLAYED_WHEN_READY, isReady);
+        long pauseTime = mSimpleExpPlayer.getCurrentPosition();
+        outState.putLong(SAVE_STATE_PAUSE_TIME, pauseTime);
     }
 
     @Override
@@ -137,8 +156,20 @@ public class StepFragment extends Fragment {
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
+    public void onStart() {
+        super.onStart();
+        initMediaPlayer();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        initMediaPlayer();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
         releasePlayer();
     }
 
@@ -178,7 +209,11 @@ public class StepFragment extends Fragment {
             MediaSource mediaSource = new ExtractorMediaSource(videoUri, new DefaultDataSourceFactory(
                     Objects.requireNonNull(getContext()), userAgent), new DefaultExtractorsFactory(), null, null);
             mSimpleExpPlayer.prepare(mediaSource);
-            mSimpleExpPlayer.setPlayWhenReady(true);
+            mSimpleExpPlayer.setPlayWhenReady(mIsPlayerReady);
+
+            if (mIsPlayerPaused) {
+                mSimpleExpPlayer.seekTo(mPlayerPausePosition);
+            }
 
             // Check to show it full screen or normal
             int orientation = getResources().getConfiguration().orientation;
@@ -197,6 +232,7 @@ public class StepFragment extends Fragment {
                                 | View.SYSTEM_UI_FLAG_IMMERSIVE);
             }
         }
+
     }
 
     public interface OnNextPreviousStepClickedListener {

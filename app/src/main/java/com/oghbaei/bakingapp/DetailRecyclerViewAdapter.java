@@ -6,10 +6,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.oghbaei.bakingapp.queryModel.Step;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,6 +71,7 @@ public class DetailRecyclerViewAdapter extends RecyclerView.Adapter<DetailRecycl
     class ViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.tv_step_description) TextView mStepDescription;
+        @BindView(R.id.imageView_step_thumbnail) ImageView mThumbnailImageView;
         @BindView(R.id.ll_detail_recycler_view_item) LinearLayout mBackground;
         private final Context mContext;
         private String stepId;
@@ -108,6 +111,12 @@ public class DetailRecyclerViewAdapter extends RecyclerView.Adapter<DetailRecycl
             } else {
                 stepId = null;
                 mStepDescription.setText(mContext.getString(R.string.no_name));
+            }
+            String thumbnail = step.getThumbnailURL();
+            if (thumbnail != null && !thumbnail.isEmpty()) {
+                Picasso.with(mContext).load(thumbnail).error(R.drawable.no_thumbnail).into(mThumbnailImageView);
+            } else {
+                Picasso.with(mContext).load(R.drawable.no_thumbnail).into(mThumbnailImageView);
             }
         }
     }

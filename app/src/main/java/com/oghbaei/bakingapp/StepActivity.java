@@ -34,11 +34,13 @@ public class StepActivity extends AppCompatActivity implements StepFragment.OnNe
         // Set activity title
         setActivityTitle(mStepId);
 
-        StepFragment stepFragment = StepFragment.newInstance(mRecipe, mStepId);
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction()
-                .add(R.id.fl_step_fragment_activity, stepFragment)
-                .commit();
+        if (savedInstanceState == null) {
+            StepFragment stepFragment = StepFragment.newInstance(mRecipe, mStepId);
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction()
+                    .add(R.id.fl_step_fragment_activity, stepFragment)
+                    .commit();
+        }
     }
 
     @Override
