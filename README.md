@@ -17,3 +17,12 @@ One of the biggest problems in learning process is to have a simple example to l
 * [Picasso](https://github.com/square/picasso)
 
 ## Screenshots:
+
+|    |   |   |   |
+| ------------- | ------------- | ------------- | ------------- |
+| <img src="screenshots/Screenshot_1525863520.png" width="250"> | <img src="screenshots/Screenshot_1525863526.png" width="250">  | <img src="screenshots/Screenshot_1525863530.png" width="250"> | <img src="screenshots/Screenshot_1525863535.png" width="250"> |
+
+<img src="screenshots/Screenshot_1525863696.png" width="250">
+
+<img src="screenshots/Screenshot_1525863707.png" width="250">
+
