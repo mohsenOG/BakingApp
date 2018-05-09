@@ -6,6 +6,7 @@ import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.text.TextUtils;
 import android.widget.RemoteViews;
 
 import java.util.Objects;
@@ -21,7 +22,7 @@ public class BakingAppWidget extends AppWidgetProvider {
 
     private static void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId, String ingredients) {
                 RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.baking_app_widget);
-                if (ingredients != null && !ingredients.isEmpty()) {
+                if (!TextUtils.isEmpty(ingredients)) {
                     remoteViews.setTextViewText(R.id.tv_appwidget, ingredients);
                 } else {
                     SharedPreferences sharedPreferences = context.getSharedPreferences("MyPref", 0);

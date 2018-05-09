@@ -4,9 +4,12 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.MenuItem;
 
 import com.oghbaei.bakingapp.queryModel.Recipe;
+
+import org.w3c.dom.Text;
 
 import java.util.Objects;
 
@@ -79,7 +82,7 @@ public class StepActivity extends AppCompatActivity implements StepFragment.OnNe
 
     private void setActivityTitle(String stepId) {
         String stepTitle = mRecipe.getStep(Integer.valueOf(stepId)).getShortDescription();
-        if (stepTitle == null || stepTitle.isEmpty())
+        if (TextUtils.isEmpty(stepTitle))
             stepTitle = getString(R.string.no_step_title) + " " + mStepId;
         setTitle(stepTitle);
     }

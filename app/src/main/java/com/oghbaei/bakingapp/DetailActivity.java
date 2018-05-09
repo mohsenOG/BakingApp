@@ -12,6 +12,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.MenuItem;
 
 import com.oghbaei.bakingapp.queryModel.Recipe;
@@ -51,7 +52,7 @@ public class DetailActivity extends AppCompatActivity implements DetailFragment.
         if (extras != null) {
             mRecipe = extras.getParcelable(RECIPE_KEY_RECIPE_ACT_TO_DETAIL_ACT);
             String title = mRecipe != null ? mRecipe.getName() : null;
-            if (title != null && !title.isEmpty()) {
+            if (!TextUtils.isEmpty(title)) {
                 this.setTitle(mRecipe.getName());
             }
         }

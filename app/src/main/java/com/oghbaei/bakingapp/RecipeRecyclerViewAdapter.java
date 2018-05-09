@@ -3,6 +3,7 @@ package com.oghbaei.bakingapp;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -95,7 +96,7 @@ public class RecipeRecyclerViewAdapter extends RecyclerView.Adapter<RecipeRecycl
             }
             // Set recipe image
             String recipeImagePath = recipe.getImage();
-            if (recipeImagePath != null && !recipeImagePath.isEmpty()) {
+            if (!TextUtils.isEmpty(recipeImagePath)) {
                 Picasso.with(mContext).load(recipeImagePath).error(R.drawable.no_thumbnail).into(mRecipeImageView);
             } else {
                 Picasso.with(mContext).load(R.drawable.no_thumbnail).into(mRecipeImageView);

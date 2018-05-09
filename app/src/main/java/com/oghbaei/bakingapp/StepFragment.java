@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -188,7 +189,7 @@ public class StepFragment extends Fragment {
     private void initDescriptionView() {
         Step step = mRecipe.getStep(Integer.valueOf(mStepId));
         String description = step.getDescription();
-        if (description == null || description.isEmpty()) {
+        if (TextUtils.isEmpty(description)) {
             description = getString(R.string.no_description);
         }
         mDescriptionTextView.setText(description);
@@ -197,7 +198,7 @@ public class StepFragment extends Fragment {
     private void initMediaPlayer() {
         Step step = mRecipe.getStep(Integer.valueOf(mStepId));
         String video = step.getVideoURL();
-        if (video == null || video.isEmpty()) {
+        if (TextUtils.isEmpty(video)) {
             mExoPlayerView.setVisibility(View.GONE);
             return;
         }

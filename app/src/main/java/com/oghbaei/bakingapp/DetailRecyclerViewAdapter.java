@@ -3,6 +3,7 @@ package com.oghbaei.bakingapp;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -106,7 +107,7 @@ public class DetailRecyclerViewAdapter extends RecyclerView.Adapter<DetailRecycl
         void bindingData(Step step) {
             // Set Recipe step name.
             String stepShortDescription = step.getShortDescription();
-            if (stepShortDescription != null && !stepShortDescription.isEmpty()) {
+            if (!TextUtils.isEmpty(stepShortDescription)) {
                 stepId = step.getId();
                 mStepDescription.setText(stepShortDescription);
             } else {
@@ -115,7 +116,7 @@ public class DetailRecyclerViewAdapter extends RecyclerView.Adapter<DetailRecycl
             }
             // Set detail thumbnail.
             String thumbnail = step.getThumbnailURL();
-            if (thumbnail != null && !thumbnail.isEmpty()) {
+            if (!TextUtils.isEmpty(thumbnail)) {
                 Picasso.with(mContext).load(thumbnail).error(R.drawable.no_thumbnail).into(mThumbnailImageView);
             } else {
                 Picasso.with(mContext).load(R.drawable.no_thumbnail).into(mThumbnailImageView);
