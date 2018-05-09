@@ -104,6 +104,7 @@ public class DetailRecyclerViewAdapter extends RecyclerView.Adapter<DetailRecycl
         }
 
         void bindingData(Step step) {
+            // Set Recipe step name.
             String stepShortDescription = step.getShortDescription();
             if (stepShortDescription != null && !stepShortDescription.isEmpty()) {
                 stepId = step.getId();
@@ -112,6 +113,7 @@ public class DetailRecyclerViewAdapter extends RecyclerView.Adapter<DetailRecycl
                 stepId = null;
                 mStepDescription.setText(mContext.getString(R.string.no_name));
             }
+            // Set detail thumbnail.
             String thumbnail = step.getThumbnailURL();
             if (thumbnail != null && !thumbnail.isEmpty()) {
                 Picasso.with(mContext).load(thumbnail).error(R.drawable.no_thumbnail).into(mThumbnailImageView);

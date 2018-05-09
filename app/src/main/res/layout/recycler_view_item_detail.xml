@@ -10,8 +10,8 @@
     <ImageView
         android:id="@+id/imageView_step_thumbnail"
         android:contentDescription="@string/thumbnail_content"
-        android:layout_width="140dp"
-        android:layout_height="140dp" />
+        android:layout_width="@dimen/imageView_size"
+        android:layout_height="@dimen/imageView_size" />
 
     <TextView
         android:id="@+id/tv_step_description"

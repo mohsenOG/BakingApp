@@ -27,12 +27,14 @@ import retrofit2.Response;
 
 public class RecipeActivity extends AppCompatActivity implements RecipeFragment.OnRecipeFragmentInteractionListener {
 
+    private static final String RECIPES_SAVE_INSTANCE = "RECIPES_SAVE_INSTANCE";
     public static final String RECIPE_KEY_RECIPE_ACT_TO_DETAIL_ACT = "RECIPE_KEY_RECIPE_ACT_TO_DETAIL_ACT";
 
     @BindView(R.id.tv_error_msg_display) TextView mErrorTextView;
     @BindView(R.id.pb_loading_indicator) ProgressBar mLoadingIndicator;
     @BindView(R.id.btn_search_again) Button mRetryButton;
     @BindView(R.id.fl_recipe) FrameLayout mRecipeFragmentFrameLayout;
+    private ArrayList<Recipe> mRecipes = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,13 +42,23 @@ public class RecipeActivity extends AppCompatActivity implements RecipeFragment.
         setContentView(R.layout.activity_recipe);
         ButterKnife.bind(this);
 
+        if (savedInstanceState != null) {
+            mRecipes = savedInstanceState.getParcelableArrayList(RECIPES_SAVE_INSTANCE);
+        }
+
         // Check if it is online.
         boolean isOnline = Utils.isOnline(this);
-        if (isOnline) {
+        if (isOnline && mRecipes == null) {
             queryDataFromWeb();
-        } else {
+        } else if (!isOnline && mRecipes == null) {
             showHideErrorMessage(getString(R.string.no_internet), true);
         }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putParcelableArrayList(RECIPES_SAVE_INSTANCE, mRecipes);
+        super.onSaveInstanceState(outState);
     }
 
     private void showHideErrorMessage(String msg, boolean show) {
@@ -72,10 +84,10 @@ public class RecipeActivity extends AppCompatActivity implements RecipeFragment.
         call.enqueue(new Callback<ArrayList<Recipe>>() {
             @Override
             public void onResponse(@NonNull Call<ArrayList<Recipe>> call, @NonNull Response<ArrayList<Recipe>> response) {
-                ArrayList<Recipe> recipes = response.body();
-                if (recipes == null || recipes.isEmpty()) return;
+                mRecipes = response.body();
+                if (mRecipes == null || mRecipes.isEmpty()) return;
 
-                RecipeFragment recipeFragment = RecipeFragment.newInstance(recipes);
+                RecipeFragment recipeFragment = RecipeFragment.newInstance(mRecipes);
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 fragmentManager.beginTransaction()
                         .add(R.id.fl_recipe, recipeFragment)
@@ -86,6 +98,7 @@ public class RecipeActivity extends AppCompatActivity implements RecipeFragment.
 
             @Override
             public void onFailure(@NonNull Call<ArrayList<Recipe>> call, @NonNull Throwable t) {
+                mRecipes = null;
                 showHideErrorMessage(getString(R.string.no_internet), true);
             }
         });

@@ -6,9 +6,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.oghbaei.bakingapp.queryModel.Recipe;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -61,7 +63,9 @@ public class RecipeRecyclerViewAdapter extends RecyclerView.Adapter<RecipeRecycl
 
     class ViewHolder extends RecyclerView.ViewHolder {
          @BindView(R.id.tv_recipe_name) TextView recipeNameTextView;
-         private final Context mContext;
+        @BindView(R.id.imageView_recipe_image) ImageView mRecipeImageView;
+
+        private final Context mContext;
          private String recipeId;
 
         ViewHolder(View v, Context context) {
@@ -86,8 +90,16 @@ public class RecipeRecyclerViewAdapter extends RecyclerView.Adapter<RecipeRecycl
                 recipeId = recipe.getId();
                 recipeNameTextView.setText(recipeName);
             }
-            else
+            else {
                 recipeNameTextView.setText(mContext.getString(R.string.no_name));
+            }
+            // Set recipe image
+            String recipeImagePath = recipe.getImage();
+            if (recipeImagePath != null && !recipeImagePath.isEmpty()) {
+                Picasso.with(mContext).load(recipeImagePath).error(R.drawable.no_thumbnail).into(mRecipeImageView);
+            } else {
+                Picasso.with(mContext).load(R.drawable.no_thumbnail).into(mRecipeImageView);
+            }
         }
     }
 

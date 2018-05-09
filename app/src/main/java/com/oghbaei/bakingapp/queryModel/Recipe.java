@@ -29,6 +29,8 @@ public class Recipe implements Parcelable {
 
     public void setId(String id) {this.id = id;}
 
+    public String getImage() {return image; }
+
     public void setName(String name) { this.name = name; }
 
     public void setIngredients(List<Ingredient> ingredients) { this.ingredients = ingredients; }

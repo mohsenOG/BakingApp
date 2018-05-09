@@ -6,6 +6,7 @@ import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -80,8 +81,9 @@ public class StepFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_step, container, false);
+        final View rootView = inflater.inflate(R.layout.fragment_step, container, false);
         ButterKnife.bind(this, rootView);
+        final View mainLayoutView = rootView.findViewById(R.id.step_fragment_main_layout);
 
         if (mIsLargeScreen) {
           mPreviousStepButton.setVisibility(View.GONE);
@@ -95,7 +97,7 @@ public class StepFragment extends Fragment {
                         int newStepId = stepIdInt - 1;
                         mListener.onPreviousStepClicked(String.valueOf(newStepId));
                     } else {
-                        Toast.makeText(getContext(), getString(R.string.no_previous_step), Toast.LENGTH_LONG).show();
+                        Snackbar.make(mainLayoutView, getString(R.string.no_previous_step), Snackbar.LENGTH_LONG).show();
                     }
                 }
             });
@@ -108,7 +110,7 @@ public class StepFragment extends Fragment {
                         int newStepId = stepIdInt + 1;
                         mListener.onNextStepClicked(String.valueOf(newStepId));
                     } else {
-                        Toast.makeText(getContext(), getString(R.string.no_next_step), Toast.LENGTH_LONG).show();
+                        Snackbar.make(mainLayoutView, getString(R.string.no_next_step), Snackbar.LENGTH_LONG).show();
                     }
                 }
             });
@@ -129,10 +131,12 @@ public class StepFragment extends Fragment {
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        boolean isReady = mSimpleExpPlayer.getPlayWhenReady();
-        outState.putBoolean(SAVE_STATE_PLAYER_PLAYED_WHEN_READY, isReady);
-        long pauseTime = mSimpleExpPlayer.getCurrentPosition();
-        outState.putLong(SAVE_STATE_PAUSE_TIME, pauseTime);
+        if (mSimpleExpPlayer != null){
+            boolean isReady = mSimpleExpPlayer.getPlayWhenReady();
+            outState.putBoolean(SAVE_STATE_PLAYER_PLAYED_WHEN_READY, isReady);
+            long pauseTime = mSimpleExpPlayer.getCurrentPosition();
+            outState.putLong(SAVE_STATE_PAUSE_TIME, pauseTime);
+        }
     }
 
     @Override
